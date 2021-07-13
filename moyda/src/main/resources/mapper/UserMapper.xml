@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.moyda.www.dao.UserDao">
+
+	<select id="userfindById" resultType="user">
+	select users_no userNo,email from users_ where irum=#{u.irum} and phone=#{u.phone} and rownum=1
+	</select>
+	
+	<select id="hostfindById" resultType="host">
+	select host_no hostNo,email from host_ where nickname=#{h.nickname} and phone=#{h.phone} and rownum=1
+	</select>
+	
+	<select id="userfindByPass" resultType="user">
+	select users_no userNo,email,password from users_ where irum=#{u.irum} and email=#{u.email} and rownum=1
+	</select>
+	
+	<select id="hostfindByPass" resultType="host">
+	select host_no hostNo,email,password from host_ where nickname=#{h.nickname} and email=#{h.email} and rownum=1
+	</select>
+	
+	<select id="userfindByPhone" resultType="user">
+	select users_no userNo,email,irum,phone from users_ where phone=#{u} and rownum=1
+	</select>
+	
+	<select id="hostfindByPhone" resultType="host">
+	select host_no hostNo,email,nickname,phone from host_ where phone=#{h} and rownum=1
+	</select>
+	
+	<select id="tfindById" resultType="user">
+	select users_no userNo,email,irum,nickname,phone,age,sex,area,profile,password,exile_cnt exileCnt,report_cnt reportCnt,
+	enabled,check_code checkCode,cash from users_ where email=#{email} and rownum=1
+	</select>
+
+	<insert id="userJoin">
+		<selectKey keyProperty="u.userNo" resultType="int" order="BEFORE">
+			select user_seq.nextval from dual
+		</selectKey>
+		insert into users_(users_no,email,irum,nickname,phone,age,sex,area,profile,password,exile_cnt,report_cnt,enabled,check_code,cash) 
+		values(#{u.userNo}, #{u.email}, #{u.irum}, #{u.nickname}, #{u.phone}, #{u.age}, #{u.sex}, #{u.area}, #{u.profile}, #{u.password},0,0,1,0,0)
+	</insert>
+	
+		<insert id="hostJoin">
+		<selectKey keyProperty="h.hostNo" resultType="int" order="BEFORE">
+			select host_seq.nextval from dual
+		</selectKey>
+		insert into host_(host_no,email,nickname,phone,area,account,profile,password,report_cnt,enabled,check_code) 
+		values(#{h.hostNo}, #{h.email}, #{h.nickname}, #{h.phone}, #{h.area},null, #{h.profile}, #{h.password},0,0,0)
+	</insert>
+	
+	<select id="findByCheckCode" resultType="user">
+	select users_no userNo,email,irum,nickname,phone,age,sex,area,profile,password,exile_cnt exileCnt,report_cnt reportCnt,
+	enabled,cash from users_ where check_code=#{c} and rownum=1
+	</select>
+	
+	<update id="update">
+		update users_
+		<trim suffixOverrides="," prefix="set">
+			<if test="password!=null">password=#{password},</if>			
+			<if test="irum!=null">irum=#{irum},</if>
+			<if test="age!=null">age=#{age},</if>
+			<if test="sex!=null">sex=#{sex},</if>
+			<if test="phone!=phone">phone=#{phone},</if>
+			<if test="nickname!=null">nickname=#{nickname},</if>
+			<if test="area!=null">area=#{area},</if>	
+			<if test="profile!=null">profile=#{profile},</if>
+			<if test="checkCode!=null">check_code=null,</if>
+			<if test="enabled!=null">enabled=#{enabled},</if>
+		</trim>
+		where email=#{email} and rownum=1
+	</update>
+	
+	<select id="existsById" resultType="boolean">
+		select count(*) from users_ where email=#{u} and rownum=1
+	</select>
+	
+		<select id="existsByPhone" resultType="boolean">
+		select count(*) from users_ where phone=#{p} and rownum=1
+	</select>
+	
+	<select id="existsByHostId" resultType="boolean">
+		select count(*) from host_ where email=#{u} and rownum=1
+	</select>
+	
+	<select id="existsByHostPhone" resultType="boolean">
+		select count(*) from host_ where phone=#{p} and rownum=1
+	</select>
+	
+	<select id="loginCheck" resultType="boolean">
+		select count(*) from users_ where email=#{email} and password=#{password} and rownum=1	
+	</select>
+	
+		<select id="hostloginCheck" resultType="boolean">
+		select count(*) from host_ where email=#{email} and password=#{password} and rownum=1	
+	</select>
+	
+</mapper>

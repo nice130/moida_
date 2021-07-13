@@ -1,0 +1,285 @@
+drop table faq_category;
+drop table board_faq;
+drop table club_board;
+drop table club_board_comment;
+drop table club_board_meeting;
+drop table board_notice;
+drop table pro_review;
+drop table category_b;
+drop table club;
+drop table club_board_notice;
+drop table host_profile;
+drop table host_;
+drop table pro;
+drop table category_s;
+drop table club_users;
+drop table pay_list;
+drop table users_tag;
+drop table users_;
+drop table open_course;
+drop table course;
+drop table charge_list;
+drop table authority;
+--ALTER TABLE PROF1
+--ADD CONSTRAINT PR_CODE_PK PRIMARY KEY (PR_CODE);
+
+--복합키
+--ALTER TABLE ADDRESS1
+--ADD CONSTRAINT AD_STCODE_PK PRIMARY KEY(AD_STCODE, AD_ADDRESS);
+
+--시퀀스
+--create sequence board_seq minvalue 0;
+--select board_seq.nextval from dual;
+
+
+create TABLE faq_category(
+    faq_title_no number(5),
+    title NVARCHAR2(50)  
+);
+ALTER TABLE faq_category
+ADD CONSTRAINT faq_title_no_PK PRIMARY KEY (faq_title_no);
+
+create table board_faq(
+    faq_no number(5),
+    faq_title_no number(5),
+    title NVARCHAR2(50),
+    content clob,
+    writer NVARCHAR2(6)
+);
+ALTER TABLE board_faq
+	ADD	CONSTRAINT PK_FAQ_NO_TITLE_NO
+    PRIMARY KEY (
+			faq_no,
+			faq_title_no
+		);
+
+create table club_board(
+    club_board_no number(6),
+    title NVARCHAR2(50),
+    content clob,
+    read_cnt number(10),
+    good_cnt number(10),
+    bad_cnt number(10),
+    writer NVARCHAR2(6),
+    write_time DATE,
+    club_no number(6)
+);
+ALTER TABLE club_board
+ADD CONSTRAINT club_board_no_PK PRIMARY KEY (club_board_no);
+
+create table club_board_comment(
+    comment_no number(6),
+    writer NVARCHAR2(6),
+    profile VARCHAR2(50),
+    content NVARCHAR2(200),
+    write_time Date,
+    club_board_no number(6),
+    meeting_no number(6)
+);
+ALTER TABLE club_board_comment
+ADD CONSTRAINT comment_no_PK PRIMARY KEY (comment_no);
+
+create table club_board_meeting(
+    meeting_no number(6),
+    day date,
+    location NVARCHAR2(3),
+    content clob,
+    schedule clob,
+    join_cnt NUMBER(2),
+    club_no number(6)
+);
+ALTER TABLE club_board_meeting
+ADD CONSTRAINT meeting_no_PK PRIMARY KEY (meeting_no);
+
+create table board_notice(
+    notice_no number(6),
+    title NVARCHAR2(50),
+    content clob,
+    read_cnt number(10),
+    writer NVARCHAR2(6)
+);
+ALTER TABLE board_notice
+ADD CONSTRAINT notice_no_PK PRIMARY KEY (notice_no);
+
+create table program_review(
+    review_no number(6),
+    writer NVARCHAR2(6),
+    content clob,
+    write_time date,
+    program_no number(6),
+    host_no number(6)
+);
+ALTER TABLE program_review
+ADD CONSTRAINT review_no_PK PRIMARY KEY (review_no);
+
+create table category_b(
+    ca_b_no number(2),
+    name NVARCHAR2(10)
+);
+ALTER TABLE category_b
+ADD CONSTRAINT ca_b_no_PK PRIMARY KEY (ca_b_no);
+
+create table club(
+    club_no number(6),
+    enabled NVARCHAR2(1),
+    profile NVARCHAR2(5),
+    name NVARCHAR2(100),
+    content clob,
+    age number(2),
+    payment NVARCHAR2(50),
+    super_enabled NVARCHAR2(1),
+    ca_b_no number(2),
+    ca_s_no number(2)
+);
+ALTER TABLE club
+ADD CONSTRAINT club_no_PK PRIMARY KEY (club_no);
+
+create table club_board_notice(
+    notice_no number(6),
+    title NVARCHAR2(50),
+    content clob,
+    club_no number(6)
+);
+ALTER TABLE club_board_notice
+ADD CONSTRAINT notice_no_PK PRIMARY KEY (notice_no);
+
+create table host_profile(
+    license NVARCHAR2(50),
+    host_no number(6)
+);
+
+create table host_(
+    host_no number(6),
+    email NVARCHAR2(50),
+    nickname NVARCHAR2(10),
+    profile VARCHAR2(50),
+    phone VARCHAR2(11),
+    area NVARCHAR2(3),
+    account NVARCHAR2(50),
+    password NVARCHAR2(12),
+    report_cnt number(2),
+    enabled NVARCHAR2(1),
+    check_code VARCHAR2(20)
+);
+ALTER TABLE host_
+ADD CONSTRAINT host_no_PK PRIMARY KEY (host_no);
+
+create table pro(
+    pro_no number(6),
+    host_no number(6),
+    program_name NVARCHAR2(30),
+    content clob,
+    fee number(10),
+    note clob,
+    ca_b_no number(2),
+    ca_s_no number(2)
+);
+ALTER TABLE pro_
+	ADD	CONSTRAINT PK_program_NO_host_NO
+    PRIMARY KEY (
+			prno,
+			host_no
+		);
+
+create table category_s(
+    ca_s_no number(2),
+    name NVARCHAR2(10),
+    ca_b_no number(2)
+);
+ALTER TABLE category_s
+ADD CONSTRAINT ca_s_no_PK PRIMARY KEY (ca_s_no);
+
+create table club_users(
+    users_no number(6),
+    club_no number(6),
+    grade NVARCHAR2(5),
+    enabled NVARCHAR2(1)
+);
+ALTER TABLE club_users
+	ADD	CONSTRAINT PK_club_users_NO_club_NO
+    PRIMARY KEY (
+			users_no,
+			club_no
+		);
+
+create table pay_list(
+    pay_list_no number(5),
+    day date,
+    content NVARCHAR2(100),
+    cash number(10),
+    users_no number(6)
+);
+ALTER TABLE pay_list
+ADD CONSTRAINT pay_list_no_PK PRIMARY KEY (pay_list_no);
+
+create table users_tag(
+    ca_s_no number(2),
+    users_no number(6)
+);
+ALTER TABLE users_tag
+	ADD	CONSTRAINT PK_users_NO_ca_s_NO
+    PRIMARY KEY (
+			ca_s_no,
+			users_no
+		);
+
+create table users_(
+    users_no number(6),
+    email NVARCHAR2(50),
+    irum NVARCHAR2(6),
+    nickname NVARCHAR2(10),
+    phone VARCHAR2(11),
+    age number(2),
+    sex VARCHAR2(1),
+    area NVARCHAR2(10),
+    profile VARCHAR2(50),
+    password NVARCHAR2(12),
+    exile_cnt number(1),
+    report_cnt number(1),
+    enabled VARCHAR2(1),
+    check_code VARCHAR2(20),
+    cash number(10)
+);
+ALTER TABLE users_
+ADD CONSTRAINT users_no_PK PRIMARY KEY (users_no);
+
+create table open_course(
+    open_no number(3),
+    program_no number(6),
+    host_no number(6),
+    schedule clob,
+    location NVARCHAR2(20)
+);
+ALTER TABLE open_course
+	ADD	CONSTRAINT PK_open_NO_program_No_host_no
+    PRIMARY KEY (
+			open_no,
+			program_no,
+			host_no
+		);
+
+create table course(
+    course_no number(6),
+    users_no number(6),
+    open_no number(3),
+    program_no number(6),
+    host_no number(6),
+    enabled NVARCHAR2(1)
+);
+ALTER TABLE course
+ADD CONSTRAINT course_no_PK PRIMARY KEY (course_no);
+
+create table charge_list(
+    charge_list_no number(6),
+    day date,
+    content NVARCHAR2(100),
+    save NUMBER(10),
+    users_no number(6)
+);
+ALTER TABLE charge_list
+ADD CONSTRAINT charge_list_no_PK PRIMARY KEY (charge_list_no);
+
+create table authority(
+    users_no number(6),
+    autho_name NVARCHAR2(50)
+);

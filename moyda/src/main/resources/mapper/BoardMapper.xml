@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.moyda.www.dao.BoardDao">
+
+	<select id="countByWriter" resultType="int">
+		select  /*+ index_ffs(board_notice notice_no_pk) */ count(notice_no) from board_notice 
+		<where>
+			<if test="writer!=null">writer=#{writer}</if>
+		</where>
+	</select>
+
+	<select id="findByall" resultType="board">
+		select notice_no noticeno, title, content, read_cnt readcnt, writer from board_notice where notice_no=#{notice_no} and rownum=1
+	</select>
+	
+	<insert id="insert">
+		<selectKey keyProperty="n.noticeNo" resultType="int" order="BEFORE">
+			select board_notice_seq.nextval from dual
+		</selectKey>
+		insert into board_notice values(#{n.noticeNo}, #{n.title}, #{n.content}, #{n.readcnt}, #{n.writer})
+	</insert>
+	
+	<insert id="faqinsert">
+		insert into board_faq values(#{f.faq_no}, #{f.faq_title_no}, #{f.title}, #{f.content}, #{f.writer})
+	</insert>
+	
+	<update id="update">
+		update board_notice 
+		<trim suffixOverrides="," prefix="set">
+			<if test="n.title!=null">title=#{n.title},</if>
+			<if test="n.content!=null">content=#{n.content},</if>
+			<if test="n.read_cnt!=null">readcnt=#{n.readcnt},</if>
+		</trim>
+		where notice_no=#{n.notice_no} and rownum=1
+	</update>
+	
+	<delete id="delete">
+		delete from board_notice where notice_no=#{n.notice_no} and rownum=1
+	</delete>
+	
+	<select id="findAll" resultType="board">
+	<![CDATA[
+	select * from
+		(select rownum as rnum, b.* from
+			(select /*+ index_desc(board_notice notice_no_pk) */ notice_no noticeno, title, content, writer from board_notice) b
+		where rownum<=#{endRowNum})
+	where rnum>=#{startRowNum}
+	]]>
+	</select>
+	
+	<select id="findByMaxClubNo" resultType="int">
+		select max(club_no) from club
+	</select>
+	
+	<select id="findByPageNo" resultType="int">
+		select count(notice_no) from board_notice where ROWNUM=1
+	</select>
+	<select id="findById" resultType="board">
+		select notice_no, title, content, writer, read_cnt readcnt
+		from board_notice where notice_no=#{n.notice_no} and rownum=1
+	</select>
+</mapper>

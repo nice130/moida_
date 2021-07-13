@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.moyda.www.dao.HostDao">
+	<select id="hostMyPage" resultType="host">
+		select host_no hostNo, email, nickname, profile, phone, area, account, password, report_cnt reportCnt, enabled, check_code checkCode 
+		from host_ 
+		where host_no=#{hostNo} and rownum=1
+	</select>
+	
+	<select id="hostMyPage2" resultType="host">
+		select license
+		from host_profile
+		where host_no=#{hostNo}
+	</select>
+	
+	<select id="hostInfoUpdate" resultType="host">
+		select host_no hostNo, email, nickname, profile, phone, area, account, password, report_cnt reportCnt, enabled, check_code checkCode 
+		from host_ 
+		where host_no=#{hostNo} and rownum=1
+	</select>
+	
+	<update id="update">
+		update host_
+		<trim suffixOverrides="," prefix="set">
+			<if test="host.nickname!=null">nickname=#{host.nickname},</if>
+			<if test="host.phone!=null">phone=#{host.phone},</if>
+			<if test="host.area!=null">area=#{host.area},</if>
+			<if test="host.account!=null">account=#{host.account},</if>
+			<if test="host.profile!=null">profile=#{host.profile},</if>
+			<if test="host.password!=null">password=#{host.password},</if>
+			
+		</trim>
+		where host_no=#{host.hostNo} and rownum=1
+	</update>
+	
+	<update id="update2">
+		update host_profile
+		<trim suffixOverrides="," prefix="set">
+			<if test="host.license!=null">license=#{host.license},</if>
+		</trim>
+		where host_no=#{host.hostNo} and rownum=1
+	</update>
+	
+	<update id="out">
+		update host_
+		set enabled=#{host.enabled}
+		where host_no=#{host.hostNo} and rownum=1
+	</update>
+	
+	<select id="myProgram" resultType="program">
+		select pro_no proNo, host_no hostNo, program_name programName, content, fee, note, ca_b_no caBNo, ca_s_no caSNo
+		from pro
+		where host_no=#{hostNo} and rownum=1
+	</select>
+	
+	<select id="myProgramOpenCourse" resultType="program">
+		select open_no openNo, schedule, location
+		from open_course
+		where host_no=#{hostNo} and rownum=1
+	</select>
+	
+	<select id="myProgramCourse" resultType="int">
+		select count(users_no)
+		from course
+		where host_no=#{hostNo}
+	</select>
+	
+	<insert id="programRegistration">
+		insert into pro(pro_no, host_no, program_name, content, fee, note, ca_b_no, ca_s_no, enabled, profile)
+		values(#{pro.proNo}, #{pro.hostNo}, #{pro.programName}, #{pro.content}, #{pro.fee}, #{pro.note}, #{pro.caBNo}, #{pro.caSNo}, 0, #{pro.profile})
+	</insert>
+	
+	<insert id="programRegistration2">
+		insert into open_course(open_no, program_no, host_no, schedule, location)
+		values(1, #{pro.proNo}, #{pro.hostNo}, #{pro.schedule}, #{pro.location})
+	</insert>
+	
+	<update id="programUpdate">
+		update pro
+		<trim suffixOverrides="," prefix="set">
+			<if test="pro.profile!=null">profile=#{pro.profile},</if>
+			<if test="pro.programName!=null">program_name=#{pro.programName},</if>
+			<if test="pro.content!=null">content=#{pro.content},</if>
+			<if test="pro.fee!=null">fee=#{pro.fee},</if>
+			<if test="pro.note!=null">note=#{pro.note},</if>
+		</trim>
+		where host_no=#{pro.hostNo} and rownum=1
+	</update>
+
+	<update id="programUpdate2">
+		update open_course
+		<trim suffixOverrides="," prefix="set">
+			<if test="pro.schedule!=null">schedule=#{pro.schedule},</if>
+			<if test="pro.location!=null">location=#{pro.location},</if>
+		</trim>
+		where host_no=#{pro.hostNo} and rownum=1
+	</update>
+	
+</mapper>

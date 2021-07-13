@@ -1,0 +1,30 @@
+	.btn_group button{ border: 1px solid rgba(0,0,0,0); background-color: rgba(0,0,0,0); padding: 5px; border:none; position:relative; height:60px;padding:0 2em;cursor:pointer;transition:800ms ease all; outline:none; } 
+	.btn_group button:hover{ color:skyblue; background-color: rgba(0,0,0,0); }
+	button:before,button:after{
+	  content:'';
+	  position:absolute;
+	  top:0;
+	  right:0;
+	  height:2px;
+	  width:0;
+	  background: #1AAB8A;
+	  transition:400ms ease all;
+	}
+	button:after{
+	  right:inherit;
+	  top:inherit;
+	  left:0;
+	  bottom:0;
+	}
+	button:hover:before,button:hover:after{
+	  width:100%;
+	  transition:800ms ease all;
+	}
+		.form-control {
+		display: inline-block !important;
+		width:200px;
+	}
+	.form-group{
+		display: inline-block !important;
+		width:200px;
+	}

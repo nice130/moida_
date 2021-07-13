@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.moyda.www.dao.ClubDao">
+	<!-- 
+		클래스를 사용할 때는 namespace 이름은 마음대로 붙인다 -> DAO쪽에서 namespace 이름을 이용해 xml을 부른다
+			tpl.selectOne("네임스페이스.id", 파라미터);
+		인터페이스를 사용할 때는 namespace 이름은 인터페이스 이름으로 지정해야만 한다 -> xml 쪽에서 DAO의 메소드를 부른다
+	-->
+	
+	<insert id="insert">
+		insert into club(club_no,enabled,profile,name,content,age,payment,super_enabled,ca_b_no,ca_s_no) 
+		values(#{club.clubNo}, #{club.enabled}, #{club.profile}, #{club.name},#{club.content},#{club.age},null,null,0,0)
+	</insert>
+	
+	<insert id="clubJoinInsert">
+		insert into club_users(users_no,club_no,grade,enabled)
+		values(#{usersNo},#{clubNo},'회원','0')
+	</insert>
+	
+	<insert id="createUserInsert">
+		insert into club_users(users_no,club_no,grade,enabled)
+		values(#{usersNo},#{clubNo},#{clubRoll},'0')
+	</insert>
+	
+	<select id="findByMaxClubNo" resultType="int">
+		select max(club_no) from club
+	</select>
+	
+	<select id="findByNo" resultType="int">
+		select club_no from club where club_no=#{clubNo}
+	</select>
+	
+	<select id="existsById" resultType="boolean">
+		select count(*) from club where name=#{name} and rownum=1
+	</select>
+	
+	<select id="findByAll" resultType="club">
+		select club_no,enabled,profile,name,content,age,payment,super_enabled,ca_b_no,ca_s_no from club where club_no=#{clubNo}
+	</select>
+	
+	<select id="findByClubUserNo" resultType="club">
+		select club_no clubNo, profile, name, content,super_enabled superEnabled where club_no=#{clubNo}
+	</select>
+	
+	<insert id="boardInsert">
+		<selectKey keyProperty="c.clubBoardNo" resultType="int" order="BEFORE">
+			select clubboard_seq.nextval from dual
+		</selectKey>
+		insert into club_board(club_board_no,title,content,read_cnt,good_cnt,bad_cnt,writer,write_time,club_no)
+		VALUES(#{c.clubBoardNo},#{c.title},#{c.content},0,0,0,#{c.writer},sysdate,#{c.clubNo})
+	</insert>
+	
+	<select id="clubBoardList" ></select>
+	
+	<select id="countByWriter" resultType="int">
+		select  /*+ index_ffs(club_board board_pk_club_board_no) */ count(club_board_no) from club_board 
+		<where>
+			<if test="writer!=null">writer=#{writer}</if>
+		</where>
+	</select>
+	
+	
+	<select id="findAll" resultType="clubBoard">
+	<![CDATA[
+	select * from
+		(select rownum as rnum, b.* from
+			(select /*+ index_desc(club_board board_pk_club_board_no) */ club_board_no clubBoardNo, title, content,read_cnt readCnt,good_cnt goodCnt,bad_cnt badCnt, writer, write_time writeTime, club_no clubNo from club_board) b
+		where rownum<=#{endRowNum})
+	where rnum>=#{startRowNum}
+	]]>
+	</select>
+	
+	<select id="findById" resultType="clubBoard">
+		select club_board_no clubBoardNo, title, content,read_cnt readCnt,good_cnt goodCnt,bad_cnt badCnt, writer, write_time writeTime, club_no clubNo
+		 from club_board where club_no=#{clubNo} and rownum=1
+	</select>
+	
+	<update id="update">
+		update club_board 
+		<trim suffixOverrides="," prefix="set">
+			<if test="c.title!=null">title=#{c.title},</if>
+			<if test="c.content!=null">content=#{c.content},</if>
+			<if test="c.readCnt!=null">read_cnt=read_cnt+1,</if>
+			<if test="c.goodCnt!=null">good_cnt=good_cnt+1,</if>
+			<if test="c.badCnt!=null">bad_cnt=bad_cnt+1,</if>
+		</trim>
+		where club_board_no=#{c.clubBoardNo} and rownum=1
+	</update>
+</mapper>

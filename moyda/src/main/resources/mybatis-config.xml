@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org/DTD config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.moyda.www.entity.Board" alias="board"/>
+		<typeAlias type="com.moyda.www.entity.FaqBoard" alias="faqboard"/>
+		<typeAlias type="com.moyda.www.entity.Host" alias="host"/>
+		<typeAlias type="com.moyda.www.entity.User" alias="user"/>
+		<typeAlias type="com.moyda.www.entity.Program" alias="program"/>
+		<typeAlias type="com.moyda.www.entity.Course" alias="course"/>
+		<typeAlias type="com.moyda.www.entity.ClubBoard" alias="clubBoard"/>
+		<typeAlias type="com.moyda.www.entity.Club" alias="club"/>
+		<typeAlias type="com.moyda.www.dto.AdminProgramUserDto" alias="adminProgramUserDto"/>
+		<typeAlias type="com.moyda.www.dto.AdminProgramHostDto" alias="adminProgramHostDto"/>
+		<typeAlias type="com.moyda.www.dto.AdminProHostUserDto" alias="adminProHostUserDto"/>
+	</typeAliases>
+</configuration>

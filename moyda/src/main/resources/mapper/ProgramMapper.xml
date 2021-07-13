@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.moyda.www.dao.ProgramDao">
+
+	<select id="countByHostNo" resultType="int">
+		select /*+ index_ffs(pro pro_pk_pro_no) */ count(pro_no)
+		from pro
+		<where>
+			<if test="hostNo!=null">host_no={hostNo}</if>
+		</where>
+	</select>
+	
+	<select id="findAll" resultType="program">
+		<![CDATA[
+			select * from
+				(select rownum as rnum, p.*from
+					(select /* + index_desc(pro pro_pk_pro_no) */ pro_no proNo, host_no hostNo, program_name programName, ca_b_no caBNo, ca_s_no caSNo, profile
+						from pro) p
+						where rownum<=#{endRowNum})
+				where rnum>=#{startRowNum}
+		]]>
+	</select>
+
+	<select id="findByProNo" resultType="program">
+		select pro_no proNo, host_no hostNo, program_name programName, content, fee, note, ca_b_no caBNo, ca_s_no caSNo
+		from pro
+		where pro_no=#{proNo}
+	</select>
+	
+	<select id="findByProNo2" resultType="program">
+		select open_no openNo, schedule, location
+		from open_course
+		where pro_no=#{proNo}
+	</select>
+
+	<select id="findByHostNo" resultType="program">
+		select license
+		from host_profile
+		where host_no=#{hostNo}
+	</select>
+	
+	<insert id="signUp">
+		insert into course(course_no, users_no, open_no, pro_no, host_no, enabled)
+		values(100, #{usersNo}, #{openNo}, #{proNo}, #{hostNo}, 0)
+	</insert>
+</mapper>

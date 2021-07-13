@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.moyda.www.dao.AdminDao">
+
+	<resultMap type="AdminProgramUserDto" id="AdminProgramUserDto">
+		<result column="users_no" property="userNo"/>
+		<result column="email" property="email"/>
+		<result column="report_cnt" property="reportCnt"/>
+		<result column="enabled" property="enabled"/>
+		<result column="course_no" property="courseNo"/>
+		<result column="pro_no" property="proNo"/>
+		<result column="program_name" property="name"/>
+	</resultMap>
+	
+	<select id="findReportProgramUser" parameterType="AdminProgramUserDto" resultMap="AdminProgramUserDto">
+	<![CDATA[
+		select * from 
+    		(select rownum as rnum, b.* from 
+        		(select /*+ index_desc(users_ users_pk_users_no)*/
+        			users_.USERS_NO,
+       				USERS_.EMAIL,
+			       	USERS_.REPORT_CNT,
+			       	users_.ENABLED,
+			       	pro.pro_no,
+			       	pro.program_name
+				from users_
+			    inner join course on users_.USERS_NO = course.USERS_NO
+			       	  join pro on course.pro_no = pro.PRO_NO 
+			    where users_.report_cnt>2 ) b
+    		where rownum<=#{endRowNum})
+		where rnum>=#{startRowNum}
+	]]>
+	</select>
+	
+	<select id="countByReportUser" resultType="int">
+		select /*+ index_ffs(users_ users_pk_users_no)*/ count(users_no) from users_ where report_cnt>2
+	</select>
+	
+	<select id="findUserById" resultType="user">
+		select users_no userNo, email, irum, nickname, phone, age, sex, area, profile, report_cnt reportCnt, enabled, cash from users_
+		where users_no=#{userNo} and rownum=1
+	</select>
+	
+	<update id="updateUser">
+		update users_
+		<trim suffixOverrides="," prefix="set">
+			<if test="u.nickname!=null">nickname=#{u.nickname},</if>
+			<if test="u.reportCnt!=null">report_cnt=report_cnt+1,</if>
+			<if test="u.enabled==true">enabled=1</if>
+			<if test="u.enabled==false">enabled=0</if>
+		</trim>
+		where users_no=#{u.userNo} and rownum=1
+	</update>
+	
+		
+	<resultMap type="AdminProgramHostDto" id="AdminProgramHostDto">
+		<result column="host_no" property="hostNo"/>
+		<result column="email" property="email"/>
+		<result column="nickname" property="nickname"/>
+		<result column="profile" property="profile"/>
+		<result column="phone" property="phone"/>
+		<result column="area" property="area"/>
+		<result column="account" property="account"/>
+		<result column="report_cnt" property="reportCnt"/>
+		<result column="enabled" property="enabled"/>
+		<result column="pro_no" property="proNo"/>
+		<result column="program_name" property="name"/>
+		<result column="content" property="content"/>
+		<result column="fee" property="fee"/>
+	</resultMap>
+	
+	<select id="findSubProgram" parameterType="AdminProgramHostDto" resultMap="AdminProgramHostDto">
+	<![CDATA[
+	select * from 
+    	(select rownum as rnum, b.* from 
+       		(select /*+ index_desc(pro_ pro_pk_pro_no)*/
+				host_.host_no,
+       			host_.email,
+       			host_.area,
+      			host_.enabled,
+    			pro.pro_no,
+       			pro.program_name,
+       			pro.fee
+			from host_
+    		inner join pro on host_.host_no = pro.host_no
+    		where pro.enabled = 0 ) b
+    	where rownum<=#{endRowNum})
+	where rnum>=#{startRowNum}
+	]]>
+	</select>
+	
+	<select id="countBySubPro" resultType="int">
+		select /*+ index_ffs(pro pro_pk_pro_no)*/ count(pro_no) from pro where enabled=0
+	</select>
+	
+	<select id="findHostDetailById" parameterType="AdminProgramHostDto" resultMap="AdminProgramHostDto">
+		select host_.host_no,
+			host_.email,
+			host_.nickname,
+        	host_.profile,
+        	host_.phone,
+			host_.area,
+        	host_.account,
+        	host_.report_cnt,
+        	host_.enabled,
+        	pro.pro_no,
+        	pro.program_name
+		from host_
+		inner join pro on host_.host_no = pro.host_no
+		where host_.host_no=#{hostNo} and rownum=1
+	</select>
+	
+	<select id="findProDetailById" parameterType="AdminProgramHostDto" resultMap="AdminProgramHostDto">
+		select host_.host_no,
+			host_.email,
+			host_.area,
+        	pro.pro_no,
+        	pro.program_name,
+        	pro.enabled,
+        	pro.content,
+        	pro.fee
+		from host_
+		inner join pro on host_.host_no = pro.host_no
+		where pro.pro_no=#{proNo} and rownum=1
+	</select>
+	
+	<update id="updateSubPro">
+		update pro
+		<trim suffixOverrides="," prefix="set">
+			<if test="p.enabled==true">enabled=1</if>
+			<if test="p.enabled==false">enabled=0</if>
+		</trim>
+		where pro_no=#{p.proNo} and rownum=1
+	</update>
+	
+	<resultMap type="AdminProHostUserDto" id="AdminProHostUserDto">
+		<result column="host_no" property="hostNo"/>
+		<result column="hemail" property="hostEmail"/>
+		<result column="report_cnt" property="reportCnt"/>
+		<result column="henabled" property="hostEnabled"/>
+		<result column="pro_no" property="proNo"/>
+		<result column="program_name" property="name"/>
+		<result column="penabled" property="proEnabled"/>
+		<result column="users_no" property="userNo"/>
+		<result column="uemail" property="userEmail"/>
+	</resultMap>
+	
+	<select id="findReportProgram" parameterType="AdminProHostUserDto" resultMap="AdminProHostUserDto">
+	<![CDATA[
+	select * from 
+    	(select rownum as rnum, b.* from 
+       		(select /*+ index_desc(pro_ pro_pk_pro_no)*/
+				host_.host_no,
+				host_.email hemail,
+				host_.report_cnt,
+				host_.enabled henabled,
+        		pro.pro_no,
+        		pro.program_name,
+        		pro.enabled penabled,
+        		users_.users_no,
+        		users_.email uemail
+			from host_
+			inner join pro on host_.host_no = pro.host_no
+        	      join course on pro.pro_no = course.pro_no
+        	      join users_ on course.users_no = users_.users_no
+			where host_.report_cnt>0 ) b
+    	where rownum<=#{endRowNum})
+	where rnum>=#{startRowNum}
+	]]>
+	</select>
+	
+	<select id="countByReportPro" resultType="int">
+		select /*+ index_ffs(host_ host_pk_host_no)*/ count (host_.host_no)
+		from host_ 
+		inner join pro on host_.host_no = pro.host_no
+		      join course on pro.pro_no = course.pro_no
+		      join users_ on course.users_no = users_.users_no 
+		where host_.report_cnt>0
+	</select>
+	
+	<update id="updateHost">
+		update host_
+		<trim suffixOverrides="," prefix="set">
+			<if test="h.enabled==true">enabled=1</if>
+			<if test="h.enabled==false">enabled=0</if>
+		</trim>
+		where host_no=#{h.hostNo} and rownum=1
+	</update>
+	
+	<delete id="deleteProgram">
+		delete from pro where pro_no=#{proNo} and rownum=1
+	</delete>
+
+</mapper>
