@@ -47,14 +47,10 @@
 		<div class="container">
 			<div class="title" style="margin: 80px 1px 50px 10px">
 				
-		      	<p>호롤롤<br>
-		      	핵웃겨<br>
-		      	이야얍<br>
-		      	이거맞나?<br>
-		      	질문할거뭐가있니<br>
-		      	안녕하세요 이제 혼자놀지마세여<br>
-		      	이제 같이놀아용<br>
-		      	잘 적응할 수 있다면 말이죠ㅋㅋㅋㅋ</p>
+		      	내가 원하는 동호회를 찾고<br>
+		      	내가 하고싶은 프로그램에 가입하여 즐길 수 있는<br>
+		      	<div style="font-size: 60px;">모이다</div>입니다.
+		      	
 	      	</div>
 		</div>
 		<div class="btn_group">

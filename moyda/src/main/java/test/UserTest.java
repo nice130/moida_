@@ -23,61 +23,61 @@ public class UserTest {
 	private UserDao dao;
 	
 //	@Test
-	public void initTest() {
-		assertThat(dao, is(notNullValue()));
-	}
+//	public void initTest() {
+//		assertThat(dao, is(notNullValue()));
+//	}
 	
 //	@Test
-	public void userJoinTest() {
-		User user = new User(5,"www@naver.com","www","www","00011112222",18,"f","계양구","default.jpg","aaaa1111",0,0,null,null,null);
-		assertThat(dao.userJoin(user), is(1));
-	}
+//	public void userJoinTest() {
+//		User user = new User(5,"www@naver.com","www","www","00011112222",18,"f","계양구","default.jpg","aaaa1111",0,0,null,null,null);
+//		assertThat(dao.userJoin(user), is(1));
+//	}
 	
 //	@Test
-	public void userfindById() {
-		User user = User.builder().irum("최형택").phone("01011111111").build();
-		assertThat(dao.userfindById(user).getUserNo(), is(1));
-	}
+//	public void userfindById() {
+//		User user = User.builder().irum("최형택").phone("01011111111").build();
+//		assertThat(dao.userfindById(user).getUserNo(), is(1));
+//	}
 	
 //	@Test
-	public void hostfindById() {
-		Host host = Host.builder().nickname("minho").phone("01012341234").build();
-		assertThat(dao.hostfindById(host).getHostNo(), is(1));
-	}
+//	public void hostfindById() {
+//		Host host = Host.builder().nickname("minho").phone("01012341234").build();
+//		assertThat(dao.hostfindById(host).getHostNo(), is(1));
+//	}
 	
 //	@Test
-	public void userfindByPass() {
-		User user = User.builder().irum("최형택").email("@naver.com").build();
-		assertThat(dao.userfindByPass(user).getUserNo(), is(1));
-	}
+//	public void userfindByPass() {
+//		User user = User.builder().irum("최형택").email("@naver.com").build();
+//		assertThat(dao.userfindByPass(user).getUserNo(), is(1));
+//	}
 	
 //	@Test
-	public void hostfindByPass() {
-		Host host = Host.builder().nickname("minho").email("minho@naver.com").build();
-		assertThat(dao.hostfindByPass(host).getHostNo(), is(1));
-	}
+//	public void hostfindByPass() {
+//		Host host = Host.builder().nickname("minho").email("minho@naver.com").build();
+//		assertThat(dao.hostfindByPass(host).getHostNo(), is(1));
+//	}
 	
 //	@Test
-	public void userfindByPhone() {
-		String user = "01011111111";
-		assertThat(dao.userfindByPhone(user).getUserNo(), is(1));
-	}
+//	public void userfindByPhone() {
+//		String user = "01011111111";
+//		assertThat(dao.userfindByPhone(user).getUserNo(), is(1));
+//	}
 	
 //	@Test
-	public void hostfindByPhone() {
-		String host = "01012341234";
-		assertThat(dao.hostfindByPhone(host).getHostNo(),is(1));
-	}
+//	public void hostfindByPhone() {
+//		String host = "01012341234";
+//		assertThat(dao.hostfindByPhone(host).getHostNo(),is(1));
+//	}
 //	@Test
-	public void userexistsById() {
-		assertThat(dao.existsById("nice130@naver.com"),is(1));
-	}
+//	public void userexistsById() {
+//		assertThat(dao.existsById("nice130@naver.com"),is(1));
+//	}
 	
-	@Test
-	public void userlogin() {
-		String email = "@naver.com";
-		String password = "asd123123";
-		assertThat(dao.loginCheck(email, password,null),is(1));
-	}
+//	@Test
+//	public void userlogin() {
+//		String email = "@naver.com";
+//		String password = "asd123123";
+//		assertThat(dao.loginCheck(email, password,null),is(1));
+//	}
 	
 }

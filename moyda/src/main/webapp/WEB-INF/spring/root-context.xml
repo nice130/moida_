@@ -15,7 +15,7 @@
 	<!-- 				   pool을 이용해 연결을 빌려오고 반납하기 위한 표준 인터페이스가 DataSource -->
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
 		<property name="driverClassName" value="net.sf.log4jdbc.DriverSpy" />
-		<property name="url" value="jdbc:log4jdbc:oracle:thin:@121.65.47.76:4000:XE" />
+		<property name="url" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:XE" />
 		<property name="username" value="moyda1" />
 		<property name="password" value="1234" />		
 		<property name="maxTotal" value="10" />			

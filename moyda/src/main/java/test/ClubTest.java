@@ -29,27 +29,27 @@ public class ClubTest {
 	@Autowired
 	private UserDao userDao;
 	
-	//@Test
+//	@Test
 	public void initTest() {
 		assertThat(dao, is(notNullValue()));
 	}
 	
-	//@Test
-	//@Transactional
+//	@Test
+	@Transactional
 	public void insertClubCreate() {
 		Club club = new Club(1,"0","default.jpg","test클럽","안녕하세요 테스트 클럽입니다.",30,"0","0",0,0);
 		assertThat(dao.insert(club), is(1));
 	}
 	//@Test
-	//@Transactional
+	@Transactional
 	public void test() {
 		String dd = "CLUB_ROLL_ADMIN";
 		assertThat(dao.createUserInsert(1, 1,dd), is(1));
 	}
-	
-	public void clubUserJoin() {
-		
-	}
+//	
+//	public void clubUserJoin() {
+//		
+//	}
 	
 	//@Test
 	public void findByMax() {
@@ -79,7 +79,7 @@ public class ClubTest {
 		}
 	}
 	
-	@Test
+//	@Test
 	public void userSelect() {
 		assertThat(userDao.tfindById("@naver.com"), notNullValue());
 	}
