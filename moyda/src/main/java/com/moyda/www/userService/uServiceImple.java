@@ -16,6 +16,7 @@ public class uServiceImple {
 	//회원 로그인체크
 	public boolean loginCheck(String email,String password,HttpSession session) {
 		boolean result = userdao.loginCheck(email, password, session);
+		System.out.println("여기는 u서비스임플");
 		if(result) {
 			User user = userView(email,password);
 			session.setAttribute("email", user.getEmail());

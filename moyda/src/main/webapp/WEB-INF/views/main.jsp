@@ -18,7 +18,7 @@
 <body>
 	<div id="page">
 		<header>
-			<jsp:include page="include/nav.jsp" />
+			<jsp:include page="include/mainNav.jsp" />
 		</header>
 		<aside>
 			<jsp:include page="include/aside.jsp" />

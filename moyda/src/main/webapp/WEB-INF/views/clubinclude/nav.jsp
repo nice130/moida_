@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>${sessionScope.clubNo }클럽</title>
+<title>클럽상세보기</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <link href="${pageContext.request.contextPath}/resources/layout/styles/layout.css" rel="stylesheet" type="text/css" media="all">
@@ -56,6 +56,39 @@
 						<li><a class="btn" href="#">게시글 작성하러 가기</a></li>
 						<li><a class="btn inverse" href="#">모임 만들러 가기</a></li>
 					</ul>
+					<div id="page" class="container">
+						<p>나의 클럽 리스트</p>
+						<div id="list">
+							<table class="table table-bordered">
+							<colgroup>
+								<col width="10%"><col width="25%"><col width="25%">
+								<col width="10%"><col width="15%"><col width="15%">
+							</colgroup>
+								<tr>
+									<th>ProNo.</th>
+									<th>프로그램 명</th>
+									<th>호스트 ID</th>
+									<th>장소</th>
+									<th>참가비</th>
+									<th>상세보기</th>
+								</tr>
+								
+								<tr>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>					
+								
+							</table>
+						</div>
+						<p>나의 관심 프로그램</p>
+						<div>
+							
+						</div>
+					</div>
 				</footer>
 			</article>
 		</div>

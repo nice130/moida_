@@ -12,6 +12,7 @@ public class uService {
 	
 	public boolean loginCheck(User user) {
 		String name = sqlSession.selectOne("user.loginCheck", user);
+		System.out.println("여기는 uservice");
 		return (name == null) ? false : true;
 	}
 	

@@ -29,11 +29,12 @@ public class UserController {
 	}
 	@PostMapping("/loginCheck")
 	public ModelAndView loginPage(String email,String password,HttpSession session) {
+		System.out.println("email==>"+email+"password==>"+password);
 		boolean result = userdao.loginCheck(email,password,session);
-		
+		System.out.println(result);
 		if(result == true) {
 			System.out.println("성공");
-			return new ModelAndView("main").addObject("viewname","mainpage/main.jsp");
+			return new ModelAndView("main").addObject("viewname","user/main.jsp");
 		}else {
 			System.out.println("실패");
 			return new ModelAndView("rootMain").addObject("viewname","user/login.jsp");
@@ -127,5 +128,9 @@ public class UserController {
 	@GetMapping("/findresult")
 	public ModelAndView findresult() {
 		return new ModelAndView("rootMain").addObject("viewname","user/findresult.jsp");
+	}
+	@GetMapping("/main")
+	public ModelAndView mainPage() {
+		return new ModelAndView("main").addObject("viewname","user/main.jsp");
 	}
 }
